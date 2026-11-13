@@ -1,15 +1,18 @@
-﻿import Linkedin from '../components/LinkedInIcon';
+import Linkedin from '../components/LinkedInIcon';
+import WhatsAppIcon from '../components/WhatsAppIcon';
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import {
   GraduationCap,
   MapPin,
   Mail,
-
-  Briefcase,
   Calendar,
+  Award,
+  BookOpen,
+  Briefcase,
+  Sparkles,
 } from 'lucide-react';
-import { personalInfo } from '../data/personal';
+import { personalInfo, education } from '../data/personal';
 import { useTheme } from '../context/ThemeContext';
 import SectionTitle from '../components/SectionTitle';
 
@@ -21,7 +24,6 @@ function AnimatedCounter({ target, suffix = '' }) {
   useEffect(() => {
     if (!isInView) return;
 
-    // Extract numeric part from target
     const numericStr = String(target).replace(/[^0-9.]/g, '');
     const numericTarget = parseFloat(numericStr);
 
@@ -39,7 +41,6 @@ function AnimatedCounter({ target, suffix = '' }) {
     const timer = setInterval(() => {
       current += 1;
       const progress = Math.min(current / steps, 1);
-      // ease-out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
       const value = eased * numericTarget;
 
@@ -57,35 +58,32 @@ function AnimatedCounter({ target, suffix = '' }) {
   return <span ref={ref}>{count}{suffix}</span>;
 }
 
-function About() {
+export default function About() {
   const { isDark } = useTheme();
 
-  const infoItems = [
-    {
-      icon: <GraduationCap size={18} />,
-      label: 'Pendidikan',
-      value: `${personalInfo.degree} — ${personalInfo.university}`,
-    },
+  // Contact & Quick Info (Tanpa duplikasi informasi pendidikan)
+  const contactItems = [
     {
       icon: <MapPin size={18} />,
       label: 'Lokasi',
       value: personalInfo.location,
     },
     {
-      icon: <Briefcase size={18} />,
-      label: 'IPK',
-      value: personalInfo.gpa,
-    },
-    {
-      icon: <Calendar size={18} />,
-      label: 'Lulus',
-      value: personalInfo.graduationYear,
+      icon: <Sparkles size={18} />,
+      label: 'Status',
+      value: 'Available for Opportunities',
     },
     {
       icon: <Mail size={18} />,
       label: 'Email',
       value: personalInfo.email,
       href: `mailto:${personalInfo.email}`,
+    },
+    {
+      icon: <WhatsAppIcon size={18} />,
+      label: 'WhatsApp',
+      value: personalInfo.whatsappDisplay,
+      href: personalInfo.whatsapp,
     },
     {
       icon: <Linkedin size={18} />,
@@ -113,9 +111,10 @@ function About() {
       <div className="max-w-7xl mx-auto">
         <SectionTitle
           title="About Me"
-          subtitle="Mengenal lebih dekat tentang latar belakang dan pengalaman saya"
+          subtitle="Mengenal lebih dekat profil pribadi, latar belakang pendidikan, dan pengalaman saya"
         />
 
+        {/* Bio & Profile Section */}
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 mt-16">
           {/* Left Column — Photo */}
           <motion.div
@@ -140,7 +139,7 @@ function About() {
                 }`}
               />
 
-              {/* Photo placeholder */}
+              {/* Photo */}
               <div className="relative w-72 h-80 sm:w-80 sm:h-[22rem] rounded-2xl overflow-hidden">
                 {personalInfo.aboutImage ? (
                   <img
@@ -206,12 +205,12 @@ function About() {
               {personalInfo.aboutDescription}
             </motion.p>
 
-            {/* Info grid */}
+            {/* Quick Contact & Status Items */}
             <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8"
               variants={containerVariants}
             >
-              {infoItems.map((item, index) => (
+              {contactItems.map((item, index) => (
                 <motion.div
                   key={index}
                   className={`flex items-start gap-3 p-3 rounded-xl transition-colors ${
@@ -275,9 +274,7 @@ function About() {
                   variants={itemVariants}
                   whileHover={{ y: -4, transition: { duration: 0.2 } }}
                 >
-                  <div
-                    className="text-2xl sm:text-3xl font-bold mb-1 gradient-text"
-                  >
+                  <div className="text-2xl sm:text-3xl font-bold mb-1 gradient-text">
                     <AnimatedCounter
                       target={stat.value}
                       suffix={stat.value.includes('+') ? '+' : ''}
@@ -295,10 +292,161 @@ function About() {
             </motion.div>
           </motion.div>
         </div>
+
+        {/* Integrated Education Sub-Section */}
+        <motion.div
+          className="mt-16 pt-12 border-t border-dark-border/40"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="flex items-center gap-3 mb-8">
+            <div
+              className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                isDark ? 'bg-primary/20 text-primary-light' : 'bg-primary/10 text-primary'
+              }`}
+            >
+              <GraduationCap size={22} />
+            </div>
+            <div>
+              <h3 className={`text-xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                Latar Belakang Pendidikan
+              </h3>
+              <p className="text-xs text-gray-400">
+                Pendidikan formal dan pengalaman keorganisasian kampus
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            {education.map((edu) => (
+              <motion.div
+                key={edu.id}
+                className={`rounded-2xl overflow-hidden border transition-all duration-300 ${
+                  isDark
+                    ? 'bg-dark-card border-dark-border hover:border-primary/40'
+                    : 'bg-white border-gray-200 hover:border-primary/40 shadow-sm'
+                }`}
+                whileHover={{ y: -3 }}
+                transition={{ duration: 0.2 }}
+              >
+                {/* Header gradient line */}
+                <div
+                  className="h-1.5"
+                  style={{
+                    background:
+                      'linear-gradient(90deg, var(--color-primary), var(--color-accent))',
+                  }}
+                />
+
+                <div className="p-6 sm:p-8">
+                  {/* Institution & Degree */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                    <div>
+                      <h4
+                        className={`text-xl font-bold ${
+                          isDark ? 'text-white' : 'text-gray-900'
+                        }`}
+                      >
+                        {edu.institution}
+                      </h4>
+                      <p
+                        className="text-base font-semibold"
+                        style={{ color: 'var(--color-primary-light)' }}
+                      >
+                        {edu.degree}
+                      </p>
+                    </div>
+
+                    {/* Meta Badges */}
+                    <div className="flex flex-wrap gap-2">
+                      <span
+                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${
+                          isDark
+                            ? 'bg-white/5 text-gray-300 border border-white/10'
+                            : 'bg-gray-100 text-gray-700 border border-gray-200'
+                        }`}
+                      >
+                        <MapPin size={12} />
+                        {edu.location}
+                      </span>
+                      <span
+                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${
+                          isDark
+                            ? 'bg-white/5 text-gray-300 border border-white/10'
+                            : 'bg-gray-100 text-gray-700 border border-gray-200'
+                        }`}
+                      >
+                        <Calendar size={12} />
+                        {edu.period}
+                      </span>
+                      <span
+                        className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold"
+                        style={{
+                          background: isDark
+                            ? 'rgba(124,58,237,0.2)'
+                            : 'rgba(124,58,237,0.1)',
+                          color: 'var(--color-primary-light)',
+                          border: '1px solid rgba(124,58,237,0.3)',
+                        }}
+                      >
+                        <Award size={12} />
+                        IPK: {edu.gpa}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Description */}
+                  <p
+                    className={`text-sm leading-relaxed mb-6 ${
+                      isDark ? 'text-gray-300' : 'text-gray-600'
+                    }`}
+                  >
+                    {edu.description}
+                  </p>
+
+                  {/* Organizational Activities */}
+                  {edu.activities && edu.activities.length > 0 && (
+                    <div
+                      className={`pt-5 border-t ${
+                        isDark ? 'border-white/5' : 'border-gray-100'
+                      }`}
+                    >
+                      <h5
+                        className={`flex items-center gap-2 text-xs font-semibold uppercase tracking-wider mb-3 ${
+                          isDark ? 'text-gray-400' : 'text-gray-500'
+                        }`}
+                      >
+                        <BookOpen size={14} className="text-primary-light" />
+                        Pengalaman Organisasi & Kontribusi Kampus
+                      </h5>
+                      <div className="grid sm:grid-cols-2 gap-2.5">
+                        {edu.activities.map((activity, idx) => (
+                          <div
+                            key={idx}
+                            className={`flex items-start gap-2.5 p-3 rounded-xl text-sm ${
+                              isDark
+                                ? 'bg-white/[0.03] text-gray-300 border border-white/5'
+                                : 'bg-gray-50 text-gray-700 border border-gray-100'
+                            }`}
+                          >
+                            <span
+                              className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"
+                              style={{ background: 'var(--color-primary)' }}
+                            />
+                            <span>{activity}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
 }
-
-export default About;
-

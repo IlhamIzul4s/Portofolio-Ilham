@@ -32,7 +32,7 @@ export default function ExperienceCard({ experience, index, onClick }) {
     if (photoCount < 2) return;
     const timer = window.setInterval(() => {
       setPhotoIndex(current => (current + 1) % photoCount);
-    }, 1000);
+    }, 3500);
     return () => window.clearInterval(timer);
   }, [experience.id, photoCount]);
 
@@ -163,13 +163,21 @@ export default function ExperienceCard({ experience, index, onClick }) {
 
         {/* Photo placeholder */}
         {cover ? (
-          <img
-            src={cover}
-            alt={`Dokumentasi ${experience.company}`}
-            loading="lazy"
-            decoding="async"
-            className="w-full h-48 object-cover rounded-xl mb-4"
-          />
+          <div className="experience-thumb-container">
+            <img
+              key={cover}
+              src={cover}
+              alt={`Dokumentasi ${experience.company}`}
+              loading="lazy"
+              decoding="async"
+              className="experience-card-thumb animate-smooth"
+            />
+            {photoCount > 1 && (
+              <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded-md text-[10px] font-medium bg-black/60 backdrop-blur-md text-white/90 border border-white/10 pointer-events-none">
+                {photoIndex + 1}/{photoCount}
+              </div>
+            )}
+          </div>
         ) : (
           <div
             className={`w-full h-24 rounded-xl flex items-center justify-center mb-4 ${

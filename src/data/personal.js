@@ -34,6 +34,8 @@ export const personalInfo = {
   graduationYear: "2024",
   location: "Ciamis, Jawa Barat",
   email: "ilhamizulhaq7@gmail.com",
+  whatsapp: "https://wa.me/628990471162?text=Hii%20%5BWeb%5D",
+  whatsappDisplay: "WhatsApp",
   linkedin: "https://www.linkedin.com/in/ilhamizulhaq",
   linkedinDisplay: "linkedin.com/in/ilhamizulhaq",
   availableForWork: true,

@@ -23,7 +23,7 @@ export default function ExperienceDocumentation({ photos, company }) {
         <span className="muted text-sm" aria-live="polite">{index + 1} / {photos.length} foto</span>
       </div>
       <div className="experience-photo-stage">
-        <img src={photo.src} alt={photo.alt} decoding="async" className="experience-photo" />
+        <img key={photo.src} src={photo.src} alt={photo.alt} decoding="async" className="experience-photo" />
       </div>
       <div className="flex items-center justify-between gap-3 mt-3">
         <a href={photo.src} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm text-primary-light">Buka foto penuh <ExternalLink size={14} /></a>

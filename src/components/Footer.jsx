@@ -1,6 +1,7 @@
-﻿import { useTheme } from '../context/ThemeContext';
+import { useTheme } from '../context/ThemeContext';
 import { personalInfo } from '../data/personal';
 import FaLinkedinIn from './LinkedInIcon';
+import WhatsAppIcon from './WhatsAppIcon';
 import { Mail } from 'lucide-react';
 
 const navLinks = [
@@ -47,6 +48,17 @@ export default function Footer() {
 
           {/* Social Icons */}
           <div className="flex items-center gap-4">
+            <a
+              href={personalInfo.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="WhatsApp"
+              className={`p-2 rounded-full transition-colors duration-300 hover:bg-primary/20 hover:text-primary ${
+                isDark ? 'text-gray-400' : 'text-gray-500'
+              }`}
+            >
+              <WhatsAppIcon size={18} />
+            </a>
             <a
               href={personalInfo.linkedin}
               target="_blank"

@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { experiences } from '../data/experience';
 import ExperienceCard from '../components/ExperienceCard';
 import ExperienceDocumentation from '../components/ExperienceDocumentation';
@@ -24,7 +24,9 @@ export default function Experience() {
           {selected.documentation?.length ? (
             <ExperienceDocumentation key={selected.id} photos={selected.documentation} company={selected.company} />
           ) : selected.image ? (
-            <img className="mt-6 rounded-xl" src={selected.image} alt={`Dokumentasi ${selected.company}`} />
+            <div className="experience-photo-stage mt-6">
+              <img className="experience-photo" src={selected.image} alt={`Dokumentasi ${selected.company}`} />
+            </div>
           ) : <p className="notice mt-6">Dokumentasi asli belum ditambahkan.</p>}
         </Modal>
       )}
